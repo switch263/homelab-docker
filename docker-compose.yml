@@ -1,0 +1,73 @@
+version: '3'
+services:
+  influxdb:
+    image: influxdb:latest
+    container_name: influxdb
+    ports:
+      - "8083:8083"
+      - "8086:8086"
+      - "8090:8090"
+    environment:
+      - "INFLUXDB_DATA_ENGINE=tsm1"
+      - "INFLUXDB_REPORTING_DISABLED=false"
+    volumes:
+      # Data persistency
+      # sudo mkdir -p /data/docker/influxdb/data
+      - /data/docker/influxdb/data:/var/lib/influxdb
+    restart: unless-stopped
+
+  telegraf:
+    image: telegraf:latest
+    container_name: telegraf
+    links:
+      - influxdb
+    volumes:
+      - ./telegraf.conf:/etc/telegraf/telegraf.conf:ro
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - "GF_INSTALL_PLUGINS=grafana-clock-panel,briangann-gauge-panel,natel-plotly-panel,grafana-simple-json-datasource"
+    links:
+      - influxdb
+    volumes:
+      # Data persistency
+      # sudo mkdir -p /data/docker/grafana/data; chown 472:472 /data/docker/grafana/data
+      - /data/docker/grafana/data:/var/lib/grafana
+    restart: unless-stopped
+
+  organizr:
+    image: lsiocommunity/organizr:latest
+    container_name: organizr
+    ports:
+      - "8008:80"
+    volumes:
+      - /data/organizr:/config
+    restart: unless-stopped
+
+  ombi:
+    image: linuxserver/ombi:latest
+    container_name: ombi
+    ports:
+      - "3579:3579"
+    volumes:
+      - /data/ombi:/config
+    environment:
+      - "TZ=America/Chicago"
+    restart: unless-stopped
+
+  nzbget:
+    image: linuxserver/nzbget:latest
+    container_name: nzbget
+    ports:
+      - "6789:6789"
+    volumes:
+      - /data/nzbget:/config
+      - /downloads:/downloads
+    environment:
+      - "TZ=America/Chicago"
+    restart: unless-stopped
