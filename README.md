@@ -1,6 +1,7 @@
 # homelab-docker
 Misc docker applications that drive my homelab/home automation environment(s)
 
+```
 # Docker-compose file for my homelab
 # InfluxDB
 # Grafana stack
@@ -8,6 +9,7 @@ Misc docker applications that drive my homelab/home automation environment(s)
 # Organizr
 # Ombi
 # nzbget
+```
 
 # Installing
 
