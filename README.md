@@ -9,6 +9,7 @@ Misc docker applications that drive my homelab/home automation environment(s)
 # Organizr
 # Ombi
 # nzbget
+# sickchill
 ```
 
 # Installing
