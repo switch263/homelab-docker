@@ -29,4 +29,10 @@ basic docker-compose knowledge and the layout
 You will need some basic understanding of how docker-compose works, as well as basic linux skills.
 
 ## Paths:
-Assumes you have `/data` and `/downloads` configured on your system.
+Assumes you have several paths configured on your system:
+```
+/data
+/downloads
+/movies
+/tv
+```
