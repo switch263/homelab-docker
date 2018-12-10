@@ -1,4 +1,4 @@
-version: '3'
+version: '3.3'
 services:
   influxdb:
     image: influxdb:latest
@@ -11,9 +11,8 @@ services:
       - "INFLUXDB_DATA_ENGINE=tsm1"
       - "INFLUXDB_REPORTING_DISABLED=false"
     volumes:
-      # Data persistency
-      # sudo mkdir -p /data/docker/influxdb/data
       - /data/docker/influxdb/data:/var/lib/influxdb
+      - /etc/timezone:/etc/timezone
     restart: unless-stopped
 
   telegraf:
@@ -35,8 +34,6 @@ services:
     links:
       - influxdb
     volumes:
-      # Data persistency
-      # sudo mkdir -p /data/docker/grafana/data; chown 472:472 /data/docker/grafana/data
       - /data/docker/grafana/data:/var/lib/grafana
     restart: unless-stopped
 
@@ -44,7 +41,7 @@ services:
     image: lsiocommunity/organizr:latest
     container_name: organizr
     ports:
-      - "8008:80"
+      - "80:80"
     volumes:
       - /data/organizr:/config
     restart: unless-stopped
@@ -84,4 +81,19 @@ services:
       - "/data/sickchill:/config"
       - "/downloads:/downloads"
       - "/tv:/tv"
+    environment:
+      - "TZ=America/Chicago"
+    restart: unless-stopped
+
+  couchpotato:
+    image: linuxserver/couchpotato
+    container_name: couchpotato
+    ports:
+      - "5050:5050"
+    volumes:
+      - "/data/couchpotato:/config"
+      - "/downloads:/downloads"
+      - "/movies:/movies"
+    environment:
+      - "TZ=America/Chicago"
     restart: unless-stopped
