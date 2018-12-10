@@ -10,6 +10,7 @@ Misc docker applications that drive my homelab/home automation environment(s)
 # Ombi
 # nzbget
 # sickchill
+# couchpotato
 ```
 
 # Installing
